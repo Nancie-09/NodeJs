@@ -47,7 +47,42 @@
                 "enablePullDownRefresh": false
             }
             
+        },
+		{
+			"path": "pages/herbs/herbs",
+			"style": {
+				"navigationBarTitleText": "药材",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+            "path" : "pages/treatment/treatment",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "治疗",
+                "enablePullDownRefresh": false
+            }
+            
         }
+        ,{
+            "path" : "pages/history/history",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "历史",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/doctor/doctor",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "名医",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+		
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
