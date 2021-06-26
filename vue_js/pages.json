@@ -4,6 +4,15 @@
 	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+		    "path" : "pages/login/login",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "登录",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页"
@@ -21,6 +30,40 @@
 				"navigationBarTitleText": "我的"
 			}
 		},
+		{
+			"path": "pages/herbs/herbs",
+			"style": {
+				"navigationBarTitleText": "药材",
+				"enablePullDownRefresh": false
+			}
+		}
+        ,{
+            "path" : "pages/treatment/treatment",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "治疗",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/history/history",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "历史",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/doctor/doctor",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "名医",
+                "enablePullDownRefresh": false
+            }
+            
+        },
 		{
             "path" : "pages/aboutme/setting",
             "style" :                                                                                    
@@ -47,42 +90,16 @@
                 "enablePullDownRefresh": false
             }
             
-        },
-		{
-			"path": "pages/herbs/herbs",
-			"style": {
-				"navigationBarTitleText": "药材",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-            "path" : "pages/treatment/treatment",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "治疗",
-                "enablePullDownRefresh": false
-            }
-            
         }
         ,{
-            "path" : "pages/history/history",
+            "path" : "pages/register/register",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "历史",
+                "navigationBarTitleText": "注册",
                 "enablePullDownRefresh": false
             }
             
         }
-        ,{
-            "path" : "pages/doctor/doctor",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "名医",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-		
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

@@ -4,7 +4,10 @@
 		<ul>
 			<li v-for="(item,index) in histories" :key="index" class="item">
 				<view class="title">{{item.name}}</view>
-				<view class="content" v-html="getContent(item.intro)"></view>
+				<view 
+					v-if="histories.length!=0"
+					class="content" 
+					v-html="getContent(item.intro)"></view>
 			</li>
 		</ul>
 	</view>
@@ -14,7 +17,8 @@
 	export default {
 		data() {
 			return {
-				histories:[
+				histories:[],
+				history:[
 					{
 						name:'形成',
 						intro:`中医产生于原始社会，春秋战国中医理论已经基本形成，出现了解剖和医学分科，已经采用“四诊”，治疗法有砭石、针刺、汤药、艾灸、导引、布气、祝由等。
@@ -54,10 +58,21 @@
 		methods: {
 			getContent(str){
 				return str.replace(/\n/g, '<br>');
+			},
+			async getHistories() {
+			    var [error, res] = await uni.request({
+			        url: 'http://localhost:3000/history'
+			    });
+				
+				this.histories = res.data;
+				console.log(this.histories);
+				
+				
 			}
 		},
 		created() {
-			
+			this.getHistories()
+			// console.log(JSON.stringify(this.histories))
 		}
 	}
 </script>

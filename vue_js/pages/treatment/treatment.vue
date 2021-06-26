@@ -1,6 +1,10 @@
 <template>
 	<view>
-		<Picker :dataList="treatments" @choosePicker="choosePicker" ref="picker"></Picker>
+		<Picker 
+			:dataList="treatments"
+			@choosePicker="choosePicker" 
+			ref="picker"
+			v-if="treatments.length!=0"></Picker>
 		<view class="content-box">
 			<view v-if="picked[0]==-1" class="list">
 				<ul>
@@ -60,46 +64,7 @@
 			return {
 				height: 0,
 				picked: [-1, -1],
-				treatments: [{
-						name: '内治',
-						type: [{
-							icon: require('../../static/treatments/medicine.png'),
-							color: '#fbecde',
-							name: '中草药疗法',
-							intro: '中草药疗法是利用植物的叶、干、根、皮等制备的，以内服或外用的方式来治疗疾病的方法',
-							effect: '调和人体五脏六腑，清心明目，和颜悦色，润泽肌肤，通利关窍，和畅百脉。',
-							theory: '中药应用理论比较独特。中药有四气五味。四气又称四性，是指药性的寒、热、温、凉。五味指药物的辛、酸、甘、苦、咸。中草药的气、味不同，其疗效也各异。'
-
-						}]
-					},
-					{
-						name: '外治',
-						type: [{
-							icon: require('../../static/treatments/acupuncture.png'),
-							color: '#f2eeed',
-							name: '针灸疗法',
-							intro: '针灸疗法即利用针刺与艾灸进行治疗，起源于新石器时代',
-							effect: '扶正祛邪，治病保健',
-							theory: '“针”即针刺，以针刺入人体穴位治病，它依据的是“虚则补之，实则泻之”的辨证原则，进针后通过补、泻、平补平泻等手法的配合运用，以取得人体本身的调节反应；“灸”即艾灸，以火点燃艾炷或艾条，烧灼穴位，将热力透入肌肤，以温通气血'
-						},
-						{	
-							icon: require('../../static/treatments/tuina.png'),
-							color: '#f3f7ff',
-							name: '推拿疗法',
-							intro: '推拿又称按摩，是人类最古老的一种外治疗法',
-							effect: '疏通经络，行气活血，调整脏腑，理筋散结，正骨复位。',
-							theory: '力学作用松解粘连缓解肌肉痉挛，感觉刺激。'
-						},
-						{
-							icon: require('../../static/treatments/cupping.png'),
-							color: '#c0c9db',
-							name: '拔火罐疗法',
-							intro: '拔火罐疗法是我国传统的中医疗法，其操作简单、方便易行',
-							effect: '逐寒祛湿、疏通经络、祛除淤滞、行气活血、消肿止痛、拔毒泻热。',
-							theory: '拔罐疗法以罐为工具，利用燃烧、挤压等方法排除罐内空气，造成负压，使罐吸附于体表特定拔火罐部位，产生广泛刺激，形成局部充血或淤血现象，而达到防病治病。'
-						}]
-					}
-				],
+				treatments:[],
 				currentName: ''
 			}
 		},
@@ -121,25 +86,28 @@
 			showAll(){
 				this.$refs.picker.parentChooseList(-1, -1);
 				this.picked = [-1,-1];
+			},
+			async getTreatments() {
+			    var [error, res] = await uni.request({
+			        url: 'http://localhost:3000/treatment'
+			    });
+				for(let item of res.data){
+					for(let item2 of item.type){
+						let path = item2.icon;
+						item2.icon = require(`../../static/treatments/${path}`);
+					}
+					
+				}
+				this.treatments = res.data;
+				
+				
 			}
 		},
-		onLoad() {
-			uni.getSystemInfo({
-				success: function (res) {
-					// 获取可使用窗口宽度
-					let clientHeight = res.windowHeight;
-					// 获取可使用窗口高度
-					let clientWidth = res.windowWidth;
-					// 算出比例
-					let ratio = 750 / clientWidth;
-					// 算出高度(单位rpx)
-					let height = clientHeight * ratio;
-					// 设置高度
-					this.height = height;
-					console.log(height)
-				}
-			});
-		}	
+		created() {
+			// console.log(JSON.stringify(this.treatments))
+			this.getTreatments()
+		}
+		
 		
 
 	}
