@@ -8,6 +8,8 @@ const herbRoute = require('./routers/herbs');
 const doctorRoute = require('./routers/doctors');
 const treatmentRoute = require('./routers/treatments');
 const historyRoute = require('./routers/histories');
+const messageRoute = require('./routers/messsage.js')
+const likeRoute = require('./routers/like.js')
 
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -20,6 +22,9 @@ app.use('/herb',herbRoute);
 app.use('/doctor',doctorRoute);
 app.use('/treatment',treatmentRoute);
 app.use('/history',historyRoute);
+app.use('/message',messageRoute);
+app.use('/like',likeRoute);
+
 
 //Middlewares
 
