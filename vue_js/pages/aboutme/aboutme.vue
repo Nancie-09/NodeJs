@@ -11,7 +11,7 @@
 				<image src="../../static/aboutme/icon_on_the_right.png"></image>
 			</view> -->
 		</view>
-		<view class="items">
+		<view class="items" v-if="this.user!=null">
 			<view class="course">
 				<span>我的课程</span>
 				<image src="../../static/aboutme/icon_on_the_right.png"></image>
@@ -37,12 +37,7 @@
 	export default{
 		data() {
 			return {
-				user:{
-					avatar: require('../../static/forum/user_image_10.jpg'),
-					nickname: "NNNNN",
-					name:'',
-					password:''
-				},
+				user:null,
 			}
 		},
 		methods:{
@@ -51,7 +46,20 @@
 				uni.navigateTo({
 					url:"/pages/aboutme/"+pagename
 				})
+			},
+			getUser(){
+				uni.getStorage({
+					key: 'user',
+					success:  res=>{
+						console.log(res.data)
+						this.user = res.data
+					}
+				})
 			}
+		},
+		created() {
+			// console.log(JSON.stringify(this.user))
+			this.getUser()
 		}
 		
 	}

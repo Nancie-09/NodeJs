@@ -2,7 +2,7 @@
 	<view>
 		<view class="input" >
 			<span>用户名：</span>
-			<input type="text" disabled="disabled" :value="name">
+			<input type="text" disabled="disabled" :value="user.name">
 		</view>
 		<view class="input">
 			<span>昵称：</span>
@@ -48,13 +48,25 @@
 				},
 				user:null,
 				nickname:'',
-				name:'111',
 				password1:null,
 				password2:null,
 				modifyP:false,
 			}
 		},
 		methods: {
+			async modifyUser(userId,user){
+				var [error, res] = await uni.request({
+					url: 'http://localhost:3000/user/'+userId,
+					data: {
+						nickname: user.nickname,
+						password: user.password
+					},
+					method:'POST'
+				});
+				if(!error){
+					uni.navigateBack();
+				}
+			},
 			getShow(val) {
 				this.tips.show = val
 			},
@@ -64,6 +76,7 @@
 			modify() {
 				if(this.modifyP === false) {
 					// 修改昵称
+					this.user.nickname = this.nickname;
 				}
 				else {
 					if(this.password1 != this.password2){
@@ -75,9 +88,28 @@
 					}
 					else {
 						//修改密码和昵称
+						this.user.nickname = this.nickname;
+						this.user.password = this.password1;
 					}
 				}
-			}
+				console.log(this.user)
+				uni.setStorageSync('user',this.user);
+				this.modifyUser(this.user._id,this.user);
+				// uni.navigateBack();
+			},
+			getUser(){
+				uni.getStorage({
+					key: 'user',
+					success:  res=>{
+						console.log(res.data)
+						this.user = res.data
+					}
+				})
+			},
+		},
+		created() {
+			this.getUser();
+			this.nickname = this.user.nickname;
 		}
 	}
 </script>

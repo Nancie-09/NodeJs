@@ -143,11 +143,6 @@
 					this.msg.content = this.content;
 					this.msg.images = this.images;
 					this.$emit('msg',this.msg);
-					this.tips = {
-						show: true,
-						content:"发送成功",
-						time: 3,
-					};
 					this.popState = false;
 					this.content = ""
 				}

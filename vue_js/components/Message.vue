@@ -1,6 +1,6 @@
 <template>
 	<view class="messages">
-		<view class="message" v-for="(item,index) in message" :key="index" v-if="message.length!=0">
+		<view class="message" v-for="(item,index) in message" :key="index" v-if="message.length!= 0">
 			<view class="head">
 				<view class="avatar-view">
 					<image class="avatar" :src="item.avatar"></image>
@@ -44,7 +44,7 @@
 				</view>
 			</view>
 			<view class="line" ></view>
-			<Reply :replies="item.replies" :user="user" @comment="addComment(index)" @messageIndex="addMessageIndex(index)" @replyIndex="addReplyIndex" @reply="addReply"></Reply>
+			<Reply :replies="item.replies" :user="user" @messageIndex="addMessageIndex(index)" @replyIndex="addReplyIndex" @reply="addReply" @deleteFirstReply="deleteFirstReply" @deleteSecondReply="deleteSecondReply"></Reply>
 			<Tips :tips="tips" @showable="getShow"></Tips>
 		</view>
 	</view>
@@ -66,28 +66,36 @@
 					content:"",
 					time: 0,
 				},
+				messageIndex: -1,
 			};
 		},
 		methods:{
 			like(index){
-				console.log(JSON.stringify(this.message))
-				this.tips = {
-					show: true,
-					content:"点赞3",
-					time: 3,
-				};
-				this.message[index].show = true
-				this.message[index].likes++;
+				// this.tips = {
+				// 	show: true,
+				// 	content:"点赞3",
+				// 	time: 3,
+				// };
+				// this.message[index].show = true
+				// this.message[index].likes++;
+				this.$emit('like', {
+					like: true,
+					index: index
+				});
 				
 			},
 			unlike(index) {
-				this.tips = {
-					show: true,
-					content:"取消赞2",
-					time: 2,
-				};
-				this.message[index].show = false;
-				this.message[index].likes--;
+				// this.tips = {
+				// 	show: true,
+				// 	content:"取消赞2",
+				// 	time: 2,
+				// };
+				// this.message[index].show = false;
+				// this.message[index].likes--;
+				this.$emit('like', {
+					like: false,
+					index: index
+				});
 			},
 			more(){
 				this.tips = {
@@ -99,11 +107,9 @@
 			getShow(val) {
 				this.tips.show = val
 			},
-			addComment(index) {
-				this.$emit('comment',index);
-			},
+			
 			addReply(reply) {
-				console.log(reply)
+				// console.log(reply)
 				this.$emit('reply', reply);
 			},
 			addReplyIndex(index){
@@ -111,6 +117,17 @@
 			},
 			addMessageIndex(index){
 				this.$emit('messageIndex', index);
+				this.messageIndex = index;
+			},
+			deleteFirstReply(msg){
+				msg.messageIndex = this.messageIndex;
+				// console.log(msg);
+				this.$emit('deleteFirstReply',msg);
+			},
+			deleteSecondReply(msg){
+				msg.messageIndex = this.messageIndex;
+				// console.log(msg);
+				this.$emit('deleteSecondReply',msg);
 			}
 		}
 	}

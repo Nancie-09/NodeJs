@@ -1,169 +1,222 @@
 <template>
 	<view class="forum">
 		<Create :message="message" :user="user" @msg="getMessage"></Create>
-		<Message :message="message" :user="user" @comment="addComment" @reply="addReply" @replyIndex="addReplyIndex" @messageIndex="addMessageIndex"></Message>
+		<Message :message="message" :user="user" @reply="addReply" @replyIndex="addReplyIndex" @messageIndex="addMessageIndex" @deleteFirstReply="deleteFReply" @deleteSecondReply="deleteSReply" @like="likeMsg"></Message>
+		<Tips :tips="tips" @showable="getShow"></Tips>
 	</view>
 </template>
 
 <script>
 	import Message from '../../components/Message.vue'
 	import Create from '../../components/Create.vue'
+	import Tips from '../../components/Tips.vue'
 	export default {
 		components:{
-			Message,Create
+			Message,Create,Tips
 		},
 		data() {
 			return {
-				user:{
-					avatar: require('../../static/forum/user_image_10.jpg'),
-					nickname: "NNNNN",
-					name:'',
-					password:''
-				},
-				message:[
-					{
-						avatar: require('../../static/forum/user_image_01.jpg'),
-						nickname: "Lethe",
-						time: "刚刚",
-						content: "闽江路上一家门面是古式牌匾🚪【福海堂】。店里进门扑面而来的中药味，太养生了。店面是那种古香古色的布置，太像在古代了",
-						images:[
-							require('../../static/forum/p1.jpg'),
-							require('../../static/forum/p2.jpg'),
-							require('../../static/forum/p3.jpg'),
-						],
-						likes: 140,
-						show:false,
-						comment:2,
-						share: 90,
-						replies:[
-							{
-								avatar: require('../../static/forum/user_image_02.jpg'),
-								nickname: "Healer",
-								content: "用的是哪款相机，太好看了",
-								replies:[]
-							},
-							{
-								avatar: require('../../static/forum/user_image_03.jpg'),
-								nickname: "Nancie",
-								content: "想去",
-								replies:[]
-							}
-						]
-					},
-					{
-						avatar: require('../../static/forum/user_image_02.jpg'),
-						nickname: "Healer",
-						time: "一小时前",
-						content: "中医学以阴阳五行作为理论基础，将人体看成是气、形、神的统一体，通过“望闻问切”四诊合参的方法，探求病因、病性、病位，分析病机及人体内五脏六腑、经络关节、气血津液的变化，判断邪正消长，进而得出病名，归纳出证型，以辨证论治原则，制定“汗、吐、下、和、温、清、补、消”等治法，使用中药、针灸、推拿、按摩、拔罐、气功、食疗等多种治疗手段，使人体达到阴阳调和而康复。",
-						images:[
-							require('../../static/forum/p4.jpg')
-						],
-						likes: 140,
-						show:false,
-						comment:2,
-						share: 90,
-						replies:[
-							{
-								avatar: require('../../static/forum/user_image_01.jpg'),
-								nickname: "Lethe",
-								content: "中医诞生于原始社会，春秋战国时期中医理论已基本形成，之后历代均有总结发展。",
-								replies:[]
-							},
-							{
-								avatar: require('../../static/forum/user_image_01.jpg'),
-								nickname: "Lethe",
-								content: "除此之外对汉字文化圈国家影响深远，如日本医学、韩国韩医学、朝鲜高丽医学、越南东医学等都是以中医为基础发展起来的。",
-								replies:[]
-							}
-						]
-					},
-					{
-						avatar: require('../../static/forum/user_image_01.jpg'),
-						nickname: "Lethe",
-						time: "一天前",
-						content: "三国时董奉，医术高明，医德高尚，为人治病，不受谢，不受礼，只要求治愈者在他房前栽杏树作为纪念。重症愈者种5株，轻者1株。数年后，蔚然成林，红杏累累。他建一“草仓”，告诉人们，要杏果的，不用付钱，只要拿一器谷子来换一器杏果。这样用杏果换来的谷子堆积满仓，他用这些谷子救济贫民。人们非常感谢他，送他匾额上写“杏林”、“医林”、“誉满杏林”、“杏林春暖”。这些赞誉之词成为医德高尚、医术高明的雅称。",
-						images:[],
-						likes: 140,
-						show:false,
-						comment:2,
-						share: 90,
-						replies:[
-							{
-								avatar: require('../../static/forum/user_image_02.jpg'),
-								nickname: "Healer",
-								content: "这是杏林",
-								replies:[]
-							},
-							{
-								avatar: require('../../static/forum/user_image_03.jpg'),
-								nickname: "Nancie",
-								content: "《虎守杏林》：传说，董奉一天回家途中遇茅草丛中卧着一只老虎。细看没有吃人的凶相，一动不动，抬头张嘴，大声喘气，流着泪，表情很痛苦样子，是求董奉治病。董仔细看了老虎说：“明天此时你来此等候，我给你治病。”老虎点头走了。第二天董奉把两个铁环戴在胳膊上，叫老虎张口，铁环用来防虎咬。他用手掏出老虎喉咙里的骨头，治愈了老虎的病，后来老虎为了报恩，就为董垂守杏林。今人用“虎守杏林”，意在褒扬像董奉那样高超的医术。",
-								replies:[]
-							}
-						]
-					},
-					{
-						avatar: require('../../static/forum/user_image_02.jpg'),
-						nickname: "Healer",
-						time: "一周前",
-						images:[
-							require('../../static/forum/p5.jpg')
-						],
-						likes: 140,
-						show:false,
-						comment:2,
-						share: 90,
-						replies:[
-							{
-								avatar: require('../../static/forum/user_image_01.jpg'),
-								nickname: "Lethe",
-								content: "按治疗作用分为：补虚药、解表药、清热药、温里药、理气药、消食药、收涩药、祛风湿药、芳香化湿药、利水渗湿药、化痰止咳平喘药、安神药、平肝息风药、活血祛淤药、止血药、泻下药、驱虫药、芳香开窍药。",
-								replies:[]
-							},
-							{
-								avatar: require('../../static/forum/user_image_03.jpg'),
-								nickname: "Nancie",
-								content: "中医具有完整的理论体系，其独特之处，在于“天人合一”、“天人相应”的整体观及辨证论治。",
-								replies:[]
-							}
-						]
-					},
-				],
+				user:{},
 				index:-2,
 				messageIndex: -1,
+				message:[],
+				tips:{
+					show: false,
+					content:"",
+					time: 0,
+				},
 			}
 		},
 		methods: {
-			getMessage: function(msg){
-				this.message.push(msg)
+			getUser(){
+				uni.getStorage({
+					key: 'user',
+					success:  res=>{
+						console.log(res.data)
+						this.user = res.data
+					}
+				})
 			},
-			addComment(index) {
-				this.message[index].comment++;
+			async getMessages() {
+			    var [error, res] = await uni.request({
+			        url: 'http://localhost:3000/message'
+			    });
+				// for( var i = 0; i < messages.length; i++){
+				// 	messages[i].avatar = require(`../../static/{messages[i].avatar}`);
+				// 	for(var z = 0; z < messages[i].images.length;z++){
+				// 		messages[i].images[z] = require(`../..${messages[i].images[z]}`);
+				// 	}
+				// 	for(var j = 0; j < messages[i].replies.length; j++){
+				// 		messages[i].replies[j].avatar = require(`../..${messages[i].replies[j].avatar}`);
+				// 		for(var k = 0; k < messages[i].replies[j].replies.length; k++) {
+				// 			messages[i].replies[j].replies[k].avatar = require(`../..${messages[i].replies[j].replies[k].avatar}`);
+				// 		}
+				// 	}
+				// }
+				this.message = res.data;
+				console.log("messages",this.message)
 			},
-			addReplyIndex(index) {
-				this.index = index;
-				console.log("replyindex1",index)
-			},
-			addMessageIndex(index) {
-				this.messageIndex = index;
-				console.log("meindex1",index)
-			},
-			addReply(reply) {
-				console.log("reply",reply)
-				if(this.index === -1) {
-					this.message[this.messageIndex].replies.push(reply);
+			async addMessage(msg){
+				var [error, res] = await uni.request({
+					url: 'http://localhost:3000/message/',
+					data: {
+						message:msg
+					},
+					method:'POST'
+				});
+				if(!error){
+					this.getMessages();
+					this.tips = {
+						show: true,
+						content:"发送成功",
+						time: 3,
+					};
 				}
-				else if(this.listIndex === -1) {
-					// console.log(this.message[this.messageIndex].replies[this.index].replies)
-					this.message[this.messageIndex].replies[this.index].replies.push(reply);
+			},
+			async addFirstReply(messageId,reply){
+				var [error, res] = await uni.request({
+					url: 'http://localhost:3000/message/'+ messageId,
+					data: {
+						reply: reply
+					},
+					method:'POST'
+				});
+				if(!error){
+					this.getMessages();
+					this.tips = {
+						show: true,
+						content:"一级评论成功",
+						time: 1,
+					};
 				}
-				else {
-					this.message[this.messageIndex].replies[this.index].replies.push(reply);
+			},
+			async deleteFirstReply(messageId,replyId){
+				var [error, res] = await uni.request({
+					url: 'http://localhost:3000/message/delete/'+ messageId+'/'+replyId,
+					method:'POST'
+				});
+				if(!error){
+					this.getMessages();
+					this.tips = {
+						show: true,
+						content:"删除一级评论成功",
+						time: 1,
+					};
+				}
+			},
+			async addSecondReply(messageId,replyId,reply){
+				var [error, res] = await uni.request({
+					url: 'http://localhost:3000/message/'+ messageId+'/'+replyId,
+					// header:{
+					// 	'content-type':'application/json',
+					// },
+					data: {
+						reply: reply
+					},
+					method:'POST'
+				});
+				if(!error){
+					this.getMessages();
+					this.tips = {
+						show: true,
+						content:"二级评论成功",
+						time: 1,
+					};
 					
 				}
 			},
+			async deleteSecondReply(messageId,replyId,id){
+				var [error, res] = await uni.request({
+					url: 'http://localhost:3000/message/delete/'+ messageId+'/'+replyId+'/'+id,
+					method:'POST'
+				});
+				if(!error){
+					this.getMessages();
+					this.tips = {
+						show: true,
+						content:"删除二级评论成功",
+						time: 1,
+					};
+				}
+			},
+			async like(messageId){
+				var [error, res] = await uni.request({
+					url: 'http://localhost:3000/like/'+ messageId,
+					method:'POST'
+				});
+				if(!error){
+					this.getMessages();
+					this.tips = {
+						show: true,
+						content:"点赞3",
+						time: 3,
+					};
+				}
+			},
+			async unlike(messageId){
+				var [error, res] = await uni.request({
+					url: 'http://localhost:3000/like/delete/'+ messageId,
+					method:'POST'
+				});
+				if(!error){
+					this.getMessages();
+					this.tips = {
+						show: true,
+						content:"取消赞2",
+						time: 2,
+					};
+				}
+			},
+			getMessage(msg){
+				this.addMessage(msg);
+			},
+			addReplyIndex(index) {
+				this.index = index;
+			},
+			addMessageIndex(index) {
+				this.messageIndex = index;
+			},
+			addReply(reply) {
+				if(this.index === -1) {
+					this.addFirstReply(this.message[this.messageIndex]._id,reply);
+				}
+				else {
+					this.addSecondReply(this.message[this.messageIndex]._id,this.message[this.messageIndex].replies[this.index]._id,reply);
+				}
+			},
+			getShow(val) {
+				this.tips.show = val
+			},
+			deleteFReply(msg){
+				var messageIndex = msg.messageIndex;
+				var replyIndex = msg.replyIndex;
+				this.deleteFirstReply(this.message[messageIndex]._id,this.message[messageIndex].replies[replyIndex]._id);
+			},
+			deleteSReply(msg){
+				var messageIndex = msg.messageIndex;
+				var replyIndex = msg.replyIndex;
+				var index = msg.index;
+				// console.log(msg)
+				this.deleteSecondReply(this.message[messageIndex]._id,this.message[messageIndex].replies[replyIndex]._id,this.message[messageIndex].replies[replyIndex].replies[index]._id);
+			},
+			likeMsg(msg){
+				var index = msg.index;
+				var like = msg.like;
+				// console.log(msg)
+				if(like){
+					this.like(this.message[index]._id);
+				}
+				else{
+					this.unlike(this.message[index]._id)
+				}
+			}
 		},
-	}
+		created() {
+			this.getMessages();
+			this.getUser();
+		},
+		
+	};
 </script>
 
 <style>

@@ -91,7 +91,12 @@
 				this.index = index;
 			},
 			deleteReply(index){
-				this.replies.splice(index,1);
+				// this.replies.splice(index,1);
+				this.$emit('messageIndex', true);
+				this.$emit('deleteFirstReply', {
+					messageIndex: true,
+					replyIndex: index,
+				});
 			},
 			newReply(index, listIndex){
 				this.focusState = true
@@ -100,16 +105,17 @@
 				this.listIndex = listIndex;
 			},
 			deleteNewReply(index,listIndex){
-				this.replies[index].replies.splice(listIndex,1);
+				// this.replies[index].replies.splice(listIndex,1);
+				this.$emit('messageIndex', true);
+				this.$emit('deleteSecondReply', {
+					messageIndex: true,
+					replyIndex: index,
+					index: listIndex,
+				});
 			},
 			sendMsg(index, listIndex) {
 				this.$emit('messageIndex', true);
 				if(index === null) {
-					// this.replies.push({
-					// 	avatar:this.user.avatar,
-					// 	nickname:this.user.nickname,
-					// 	content: this.message
-					// });
 					this.$emit('replyIndex', -1);
 					this.$emit('reply', {
 						avatar:this.user.avatar,
@@ -120,12 +126,6 @@
 					this.message='';
 				}
 				else if(listIndex === null) {
-					// this.replies[index].replies.push({
-					// 	avatar:this.user.avatar,
-					// 	nickname:this.user.nickname,
-					// 	content: this.message,
-					// 	other: null
-					// });
 					this.$emit('replyIndex', index);
 					this.$emit('reply', {
 						avatar:this.user.avatar,
@@ -136,12 +136,6 @@
 					this.message='';
 				}
 				else {
-					// this.replies[index].replies.push({
-					// 	avatar:this.user.avatar,
-					// 	nickname:this.user.nickname,
-					// 	content: this.message,
-					// 	other: this.replies[index].replies[listIndex].nickname
-					// });
 					this.$emit('replyIndex', index);
 					this.$emit('reply', {
 						avatar:this.user.avatar,
@@ -151,7 +145,6 @@
 					});
 					this.message='';
 				}
-				this.$emit('comment', true);
 			},
 			unFocus() {
 				this.focusState = false;
@@ -163,6 +156,7 @@
 			getShow(val) {
 				this.tips.show = val
 			},
+			
 		}
 		
 	}
