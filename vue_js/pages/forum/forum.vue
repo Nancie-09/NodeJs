@@ -215,6 +215,9 @@
 			this.getMessages();
 			this.getUser();
 		},
+		onShow() {
+			this.getUser()
+		}
 		
 	};
 </script>

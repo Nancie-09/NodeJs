@@ -60,6 +60,9 @@
 		created() {
 			// console.log(JSON.stringify(this.user))
 			this.getUser()
+		},
+		onShow() {
+			this.getUser()
 		}
 		
 	}
